@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "559283322515",
+    "project_id": "baza-52eb1",
+    "storage_bucket": "baza-52eb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559283322515:android:3f20d10f87545dc3a5d766",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP06VKAbmgrB2EEbbdfSB1vUBiU70kOuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
