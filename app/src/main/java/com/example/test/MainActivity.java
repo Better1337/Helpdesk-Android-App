@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();  // Opcjonalnie: zakończ MainActivity, aby użytkownik nie mógł do niej wrócić, naciskając przycisk Wstecz
                     } else {
-                        Toast.makeText(MainActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Logowanie nieudane", Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 });

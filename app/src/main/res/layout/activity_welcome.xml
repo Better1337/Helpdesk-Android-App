@@ -9,20 +9,35 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Tekst powitalny -->
         <TextView
             android:id="@+id/welcomeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:text="Wybór numeru stanowiska" />
+            android:paddingBottom="16dp" />  <!-- Dodano paddingBottom -->
+
+        <!-- Wybór numeru stanowiska -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wybór numeru stanowiska"
+            android:textSize="24sp"
+            android:paddingBottom="4dp"/>  <!-- Dodano paddingBottom -->
+
+        <Spinner
+            android:id="@+id/stationSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp" />  <!-- Dodano paddingBottom -->
 
         <!-- Pole tekstowe do opisania problemu -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
             android:text="Opis problemu"
-            android:textSize="18sp"
-            android:paddingBottom="4dp"/>
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/descriptionEditText"
@@ -31,14 +46,7 @@
             android:hint="Wpisz opis problemu"
             android:inputType="textMultiLine"
             android:lines="4"
-            android:paddingBottom="16dp"/>
-
-        <!-- Wybór numeru stanowiska -->
-        <Spinner
-            android:id="@+id/stationSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"/>  <!-- Dodano paddingBottom -->
 
         <!-- Przyciski do dodania zdjęcia i zgłoszenia usterki -->
         <Button
@@ -46,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dodaj zdjęcie"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp"/>  <!-- Dodano paddingBottom -->
 
         <!-- Podgląd zdjęcia -->
         <ImageView
@@ -55,7 +63,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_gravity="center"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"/>  <!-- Dodano paddingBottom -->
 
         <Button
             android:id="@+id/submitReportButton"
