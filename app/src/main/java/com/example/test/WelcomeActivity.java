@@ -76,8 +76,8 @@ public class WelcomeActivity extends AppCompatActivity {
         Map<String, Object> report = new HashMap<>();
         report.put("description", description);
         report.put("station", station);
-        // TODO: Przesyłanie zdjęcia do Firebase Storage i zapisanie URL do obrazu tutaj
-        report.put("imageUri", imageUri.toString());
+        // Sprawdzenie, czy imageUri jest null, jeśli tak, ustaw wartość na pusty łańcuch
+        report.put("imageUri", imageUri != null ? imageUri.toString() : "");
 
         if (reportId != null) {
             database.child(reportId).setValue(report)
