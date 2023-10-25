@@ -16,7 +16,6 @@
             android:textSize="24sp"
             android:text="Wybór numeru stanowiska" />
 
-
         <!-- Pole tekstowe do opisania problemu -->
         <TextView
             android:layout_width="wrap_content"
@@ -49,6 +48,15 @@
             android:text="Dodaj zdjęcie"
             android:paddingBottom="8dp"/>
 
+        <!-- Podgląd zdjęcia -->
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:paddingBottom="16dp"/>
+
         <Button
             android:id="@+id/submitReportButton"
             android:layout_width="wrap_content"
@@ -56,4 +64,5 @@
             android:text="Zgłoś usterkę" />
 
     </LinearLayout>
+
 </ScrollView>

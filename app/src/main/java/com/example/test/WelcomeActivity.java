@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +23,12 @@ import java.util.Map;
 public class WelcomeActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
-
+    private ImageView imagePreview;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        imagePreview = findViewById(R.id.imagePreview);
 
         TextView welcomeTextView = findViewById(R.id.welcomeTextView);
         EditText descriptionEditText = findViewById(R.id.descriptionEditText);
@@ -64,6 +66,8 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
+            imagePreview.setImageURI(imageUri);  // Ustaw obraz w ImageView
+            imagePreview.setVisibility(View.VISIBLE);  // Pokaż ImageView
         }
     }
 
