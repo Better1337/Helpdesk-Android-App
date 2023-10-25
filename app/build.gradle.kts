@@ -46,4 +46,5 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth:latest_version")
+    implementation("com.google.firebase:firebase-database")
 }
