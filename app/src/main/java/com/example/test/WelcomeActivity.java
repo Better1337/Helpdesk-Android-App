@@ -20,6 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 public class WelcomeActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
@@ -74,24 +77,47 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     private void submitReport(String description, String station, Uri imageUri) {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("tickets");
+        // Uzyskaj referencję do miejsca, gdzie będą przechowywane zdjęcia w Firebase Storage
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference("images");
 
-        String reportId = database.push().getKey();  // Generuje unikalny identyfikator dla zgłoszenia
+        // Generuj unikalny identyfikator dla zgłoszenia
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("tickets");
+        String reportId = databaseRef.push().getKey();
+
+        if (imageUri != null) {
+            // Przesyłaj zdjęcie, jeśli istnieje
+            StorageReference imageRef = storageRef.child(reportId + "_" + imageUri.getLastPathSegment());
+            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
+                    taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        // Po pomyślnym przesłaniu zdjęcia, zapisz zgłoszenie z URL zdjęcia
+                        saveTicketWithImageUri(description, station, reportId, downloadUri.toString());
+                    })
+            ).addOnFailureListener(e ->
+                    Toast.makeText(WelcomeActivity.this, "Wystąpił błąd podczas przesyłania zdjęcia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+            );
+        } else {
+            // Jeśli nie ma zdjęcia, zapisz zgłoszenie bez URL obrazu
+            saveTicketWithImageUri(description, station, reportId, null);
+        }
+    }
+
+    private void saveTicketWithImageUri(String description, String station, String reportId, String imageUrl) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("tickets");
+
         Map<String, Object> ticket = new HashMap<>();
         ticket.put("description", description);
         ticket.put("station", station);
-        // Sprawdzenie, czy imageUri jest null, jeśli tak, ustaw wartość na pusty łańcuch
-        ticket.put("imageUri", imageUri != null ? imageUri.toString() : "");
+        ticket.put("imageUri", imageUrl != null ? imageUrl : ""); // Użyj pustego ciągu, jeśli nie ma URL
         ticket.put("status", "otwarty");
-        if (reportId != null) {
-            database.child(reportId).setValue(ticket)
-                    .addOnSuccessListener(aVoid ->
-                            Toast.makeText(WelcomeActivity.this, "Zgłoszenie zostało przesłane", Toast.LENGTH_SHORT).show()
-                    )
-                    .addOnFailureListener(e ->
-                            Toast.makeText(WelcomeActivity.this, "Wystąpił błąd: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                    );
-        }
+
+        // Ustaw wartość zgłoszenia w bazie danych
+        databaseRef.child(reportId).setValue(ticket)
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(WelcomeActivity.this, "Zgłoszenie zostało przesłane", Toast.LENGTH_SHORT).show()
+                )
+                .addOnFailureListener(e ->
+                        Toast.makeText(WelcomeActivity.this, "Wystąpił błąd przy zapisie zgłoszenia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 
 }

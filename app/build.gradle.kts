@@ -49,5 +49,5 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:latest_version")
     implementation("com.google.firebase:firebase-database")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-
+    implementation("com.google.firebase:firebase-storage:19.2.0")
 }
