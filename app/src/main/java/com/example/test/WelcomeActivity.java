@@ -74,17 +74,17 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     private void submitReport(String description, String station, Uri imageUri) {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("reports");
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("tickets");
 
         String reportId = database.push().getKey();  // Generuje unikalny identyfikator dla zgłoszenia
-        Map<String, Object> report = new HashMap<>();
-        report.put("description", description);
-        report.put("station", station);
+        Map<String, Object> ticket = new HashMap<>();
+        ticket.put("description", description);
+        ticket.put("station", station);
         // Sprawdzenie, czy imageUri jest null, jeśli tak, ustaw wartość na pusty łańcuch
-        report.put("imageUri", imageUri != null ? imageUri.toString() : "");
-
+        ticket.put("imageUri", imageUri != null ? imageUri.toString() : "");
+        ticket.put("status", "otwarty");
         if (reportId != null) {
-            database.child(reportId).setValue(report)
+            database.child(reportId).setValue(ticket)
                     .addOnSuccessListener(aVoid ->
                             Toast.makeText(WelcomeActivity.this, "Zgłoszenie zostało przesłane", Toast.LENGTH_SHORT).show()
                     )
@@ -93,4 +93,5 @@ public class WelcomeActivity extends AppCompatActivity {
                     );
         }
     }
+
 }
