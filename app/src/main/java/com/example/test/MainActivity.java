@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         // Sprawdzenie, czy użytkownik jest zalogowany
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -74,31 +73,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
                         intent.putExtra("email", user.getEmail());
                         startActivity(intent);
                         finish();  // Opcjonalnie: zakończ MainActivity, aby użytkownik nie mógł do niej wrócić, naciskając przycisk Wstecz
                     } else {
                         Toast.makeText(MainActivity.this, "Logowanie nieudane", Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                     }
                 });
     }
 
-    private void updateUI(@Nullable FirebaseUser user) {
-        if (user != null) {
-            // User is signed in
-            // TODO: Update your UI with the user information
-        } else {
-            // User is signed out
-            // TODO: Update your UI to reflect the signed out state
-        }
-    }
+
 }

@@ -13,7 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.test.R;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,14 +24,14 @@ import java.util.Map;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
     private ImageView imagePreview;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_user);
         imagePreview = findViewById(R.id.imagePreview);
 
         TextView welcomeTextView = findViewById(R.id.welcomeTextView);
@@ -93,7 +94,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         saveTicketWithImageUri(description, station, reportId, downloadUri.toString());
                     })
             ).addOnFailureListener(e ->
-                    Toast.makeText(WelcomeActivity.this, "Wystąpił błąd podczas przesyłania zdjęcia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(UserActivity.this, "Wystąpił błąd podczas przesyłania zdjęcia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
             );
         } else {
             // Jeśli nie ma zdjęcia, zapisz zgłoszenie bez URL obrazu
@@ -109,14 +110,15 @@ public class WelcomeActivity extends AppCompatActivity {
         ticket.put("station", station);
         ticket.put("imageUri", imageUrl != null ? imageUrl : ""); // Użyj pustego ciągu, jeśli nie ma URL
         ticket.put("status", "otwarty");
+        ticket.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         // Ustaw wartość zgłoszenia w bazie danych
         databaseRef.child(reportId).setValue(ticket)
                 .addOnSuccessListener(aVoid ->
-                        Toast.makeText(WelcomeActivity.this, "Zgłoszenie zostało przesłane", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(UserActivity.this, "Zgłoszenie zostało przesłane", Toast.LENGTH_SHORT).show()
                 )
                 .addOnFailureListener(e ->
-                        Toast.makeText(WelcomeActivity.this, "Wystąpił błąd przy zapisie zgłoszenia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(UserActivity.this, "Wystąpił błąd przy zapisie zgłoszenia: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
 

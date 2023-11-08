@@ -22,7 +22,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TicketAdapter adapter;
-    private List<Ticket> ticketList;
+    private List<Ticket> ticketList= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public class AdminActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ticketList = new ArrayList<>();
         adapter = new TicketAdapter(this, ticketList);
         recyclerView.setAdapter(adapter);
 

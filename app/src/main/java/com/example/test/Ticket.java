@@ -61,5 +61,5 @@ public class Ticket {
         this.userId = userId;
     }
 
-    // Możesz także dodać inne metody, które mogą być potrzebne
+
 }
