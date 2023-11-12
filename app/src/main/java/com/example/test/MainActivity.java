@@ -29,15 +29,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Inicjalizacja FirebaseAuth
+        // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // Inicjalizacja referencji do widoków
+        // Initialize references to views
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
 
-        // Dodanie słuchacza dla przycisku logowania
+        // Add click listener to login button
         loginButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
@@ -49,40 +49,52 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        checkUserRole(); // Wywołanie metody sprawdzającej rolę użytkownika.
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            checkUserRole(user); // Pass the user to checkUserRole
+                        }
                     } else {
-                        Toast.makeText(MainActivity.this, "Logowanie nieudane", Toast.LENGTH_SHORT).show();
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(MainActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void checkUserRole() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-            usersRef.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user != null) {
-                        if (user.isAdmin()) {
-                            startActivity(new Intent(MainActivity.this, AdminActivity.class));
-                        } else {
-                            startActivity(new Intent(MainActivity.this, UserActivity.class));
-                        }
-                        finish(); // Zakończ MainActivity
+    private void checkUserRole(FirebaseUser firebaseUser) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+        usersRef.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    Intent intent;
+                    if (user.isAdmin()) {
+                        intent = new Intent(MainActivity.this, AdminActivity.class);
                     } else {
-                        Toast.makeText(MainActivity.this, "Nie znaleziono danych użytkownika.", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, UserActivity.class);
                     }
+                    intent.putExtra("email", firebaseUser.getEmail()); // Pass email to the next activity
+                    startActivity(intent);
+                    finish(); // Finish MainActivity
+                } else {
+                    // If user is not found, show a message and sign out
+                    Toast.makeText(MainActivity.this, "User data not found.",
+                            Toast.LENGTH_SHORT).show();
+                    FirebaseAuth.getInstance().signOut();
+                    // Restart this activity or go back to login screen
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    finish();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Wystąpił błąd: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // Użytkownik nie jest zalogowany, więc możesz tutaj pokazać formularz logowania lub coś w tym stylu.
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Getting user data failed, log a message
+                Toast.makeText(MainActivity.this, "Failed to read user data.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
