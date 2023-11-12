@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,15 +29,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Zainicjuj FirebaseAuth
+        // Inicjalizacja FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // Zainicjuj referencje do widoków
+        // Inicjalizacja referencji do widoków
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
 
-        // Dodaj słuchacza dla przycisku logowania
+        // Dodanie słuchacza dla przycisku logowania
         loginButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
@@ -46,22 +45,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Sprawdzenie, czy użytkownik jest zalogowany
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private void signIn(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        checkUserRole(); // Wywołanie metody sprawdzającej rolę użytkownika.
+                    } else {
+                        Toast.makeText(MainActivity.this, "Logowanie nieudane", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkUserRole() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
             usersRef.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    if (user != null && user.isAdmin()) {
-                        // Otwórz AdminActivity
-                        startActivity(new Intent(MainActivity.this, AdminActivity.class));
+                    if (user != null) {
+                        if (user.isAdmin()) {
+                            startActivity(new Intent(MainActivity.this, AdminActivity.class));
+                        } else {
+                            startActivity(new Intent(MainActivity.this, UserActivity.class));
+                        }
+                        finish(); // Zakończ MainActivity
                     } else {
-                        Toast.makeText(MainActivity.this, "Brak uprawnień administratora", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Nie znaleziono danych użytkownika.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -70,24 +81,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Wystąpił błąd: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            // Użytkownik nie jest zalogowany, więc możesz tutaj pokazać formularz logowania lub coś w tym stylu.
         }
     }
-
-    public void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                        intent.putExtra("email", user.getEmail());
-                        startActivity(intent);
-                        finish();  // Opcjonalnie: zakończ MainActivity, aby użytkownik nie mógł do niej wrócić, naciskając przycisk Wstecz
-                    } else {
-                        Toast.makeText(MainActivity.this, "Logowanie nieudane", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-
 }
