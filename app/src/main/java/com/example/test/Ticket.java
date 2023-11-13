@@ -1,40 +1,41 @@
 package com.example.test;
 
 public class Ticket {
-    private String description;
-    private String station;
-    private String imageUri;
-    private String status;
     private String userId;
-
+    private String description;
+    private String imageUri;
+    private String station;
+    private String status;
+    private String ticketId;
     // Konstruktor domyślny wymagany przez Firebase
     public Ticket() {
     }
 
-    // Konstruktor z parametrami
-    public Ticket(String description, String station, String imageUri, String status, String userId) {
+    // Konstruktor z wszystkimi polami
+    public Ticket(String userId, String description, String imageUri, String station, String status,String ticketId) {
+        this.userId = userId;
         this.description = description;
-        this.station = station;
         this.imageUri = imageUri;
+        this.station = station;
         this.status = status;
+        this.ticketId= ticketId;
+    }
+
+    // Gettery i settery
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    // Gettery i settery dla każdego pola
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getStation() {
-        return station;
-    }
-
-    public void setStation(String station) {
-        this.station = station;
     }
 
     public String getImageUri() {
@@ -45,6 +46,14 @@ public class Ticket {
         this.imageUri = imageUri;
     }
 
+    public String getStation() {
+        return station;
+    }
+
+    public void setStation(String station) {
+        this.station = station;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -52,14 +61,11 @@ public class Ticket {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getUserId() {
-        return userId;
+    public String getTicketId() {
+        return ticketId;
     }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
-
-
 }
+

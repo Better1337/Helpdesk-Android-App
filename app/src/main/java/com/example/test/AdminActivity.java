@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TicketAdapter adapter;
-    private List<Ticket> ticketList= new ArrayList<>();
+    private List<Ticket> ticketList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,10 @@ public class AdminActivity extends AppCompatActivity {
                 ticketList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Ticket ticket = snapshot.getValue(Ticket.class);
-                    ticketList.add(ticket);
+                    if(ticket != null) {
+                        ticket.setTicketId(snapshot.getKey());
+                        ticketList.add(ticket);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

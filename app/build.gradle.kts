@@ -50,4 +50,6 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.firebase:firebase-storage:19.2.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 }
