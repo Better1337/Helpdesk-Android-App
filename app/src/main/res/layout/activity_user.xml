@@ -71,6 +71,15 @@
             android:layout_height="wrap_content"
             android:text="Zgłoś usterkę" />
 
+        <Button
+            android:id="@+id/buttonMyTickets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moje zgłoszenia"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"/>
+
+
     </LinearLayout>
 
 </ScrollView>

@@ -24,6 +24,7 @@
         <activity android:name=".UserActivity" />
         <activity android:name=".AdminActivity" />
         <activity android:name=".TicketDetailActivity" />
-    </application>
+        <activity android:name=".UserTicketsActivity" />
 
+    </application>
 </manifest>
