@@ -27,7 +27,7 @@ public class TicketDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_detail); // Musisz stworzyć odpowiedni layout
 
-        // Inicjalizacja widokówS
+        // Inicjalizacja widoków
         textViewEmail = findViewById(R.id.textViewEmail);
         textViewDescription = findViewById(R.id.textViewDescription);
         textViewStation = findViewById(R.id.textViewStation);
@@ -56,35 +56,35 @@ public class TicketDetailActivity extends AppCompatActivity {
                     textViewDescription.setText(ticket.getDescription());
                     textViewStation.setText(ticket.getStation());
                     textViewStatus.setText(ticket.getStatus());
-                    // Załaduj obrazek z URL używając Glide
                     Glide.with(TicketDetailActivity.this).load(ticket.getImageUri()).into(imageViewTicket);
 
-                    // Teraz pobierz dane użytkownika, który dodał zgłoszenie
+                    // Pobranie danych użytkownika na podstawie userId
                     DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(ticket.getUserId());
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot userSnapshot) {
                             User user = userSnapshot.getValue(User.class);
-                            if (user != null) {
+                            if (user != null && user.getEmail() != null) {
                                 textViewEmail.setText(user.getEmail());
+                            } else {
+                                textViewEmail.setText("Brak danych e-mail");
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(TicketDetailActivity.this, "Error loading user", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TicketDetailActivity.this, "Błąd ładowania e-maila użytkownika", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(TicketDetailActivity.this, "Ticket details not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TicketDetailActivity.this, "Szczegóły zgłoszenia nie zostały znalezione", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(TicketDetailActivity.this, "Error loading ticket", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TicketDetailActivity.this, "Błąd ładowania zgłoszenia", Toast.LENGTH_SHORT).show();
             }
         });
     }
 }
-

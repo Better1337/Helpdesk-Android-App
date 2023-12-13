@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- RecyclerView dla wyświetlenia listy zgłoszeń -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUserTickets"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayoutBottom"
+        android:padding="8dp"/>
+
+    <!-- Opcjonalny dolny pasek z przyciskami lub innymi akcjami -->
+    <LinearLayout
+        android:id="@+id/linearLayoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- Przycisk, który może być używany do dodawania nowego zgłoszenia lub innych akcji -->
+        <Button
+            android:id="@+id/buttonAddTicket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dodaj zgłoszenie"/>
+    </LinearLayout>
+
+</RelativeLayout>
