@@ -20,13 +20,6 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="16dp">
-
-        <!-- Przycisk, który może być używany do dodawania nowego zgłoszenia lub innych akcji -->
-        <Button
-            android:id="@+id/buttonAddTicket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dodaj zgłoszenie"/>
     </LinearLayout>
 
 </RelativeLayout>
