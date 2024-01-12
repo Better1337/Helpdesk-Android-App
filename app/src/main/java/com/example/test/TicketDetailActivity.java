@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class TicketDetailActivity extends AppCompatActivity {
     private TextView textViewEmail, textViewDescription, textViewStation, textViewStatus;
     private ImageView imageViewTicket;
@@ -86,7 +88,7 @@ public class TicketDetailActivity extends AppCompatActivity {
     }
 
     private void determineUserAccess(String ticketId) {
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
