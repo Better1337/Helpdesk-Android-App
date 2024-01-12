@@ -25,7 +25,7 @@ public class TicketDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ticket_detail); // Musisz stworzyć odpowiedni layout
+        setContentView(R.layout.activity_ticket_detail);
 
         // Inicjalizacja widoków
         textViewEmail = findViewById(R.id.textViewEmail);

@@ -38,10 +38,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.textViewStation.setText(ticket.getStation());
         holder.textViewStatus.setText(ticket.getStatus());
 
-        // Tylko jeden onClickListener jest potrzebny
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TicketDetailActivity.class);
-            // Zakładając, że masz getter getTicketId() w klasie Ticket
             intent.putExtra("ticketId", ticket.getTicketId());
             context.startActivity(intent);
         });

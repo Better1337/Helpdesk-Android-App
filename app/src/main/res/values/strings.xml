@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">test</string>
+    <string name="app_name">FixIT</string>
     <string name="login" />
     <string name="has_o" />
     <string name="email" />
